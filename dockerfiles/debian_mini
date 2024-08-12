@@ -6,7 +6,7 @@ RUN apt-get -y install apt-utils gcc \
 	fakeroot dbus base whiptail hexedit \
 	patch wamerican ucf manpages \
 	file luajit make lua50 dialog curl \
-	less cowsay netcat-openbsd
+	less cowsay netcat-openbsd golang
 RUN useradd -m user && echo "user:password" | chpasswd
 COPY --chown=user:user ./examples /home/user/examples
 RUN chmod -R +x  /home/user/examples/lua
@@ -15,18 +15,7 @@ WORKDIR /home/user/
 # We set env, as this gets extracted by Webvm. This is optional.
 ENV HOME="/home/user" TERM="xterm" USER="user" SHELL="/bin/bash" EDITOR="vim" LANG="en_US.UTF-8" LC_ALL="C"
 RUN echo 'root:password' | chpasswd
-
-# go 
-RUN curl -LO https://go.dev/dl/go1.22.6.linux-amd64.tar.gz && \
-    tar -C /usr/local -xzf go1.22.6.linux-amd64.tar.gz && \
-    rm go1.22.6.linux-amd64.tar.gz
-# Set up environment variables
-ENV PATH=$PATH:/usr/local/go/bin
-
-# Add environment variable to .profile
-RUN echo 'export PATH=$PATH:/usr/local/go/bin' >> $HOME/.profile
-
-# Optional: verify installation
-RUN go version
+ 
+ 
 
 CMD [ "/bin/bash" ]
